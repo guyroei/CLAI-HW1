@@ -2,7 +2,7 @@ import numpy as np
 
 import torch
 
-from lib import environ
+# from lib import environ
 
 
 def validation_run(env, net, episodes=100, device="cpu", epsilon=0.02, comission=0.1):
