@@ -2,7 +2,7 @@ import numpy as np
 
 import torch
 
-def validation_run(env, net, episodes=100, device="cpu", epsilon=0.02, commission=0.1):
+def validation_run(env, net, Actions, episodes=100, device="cpu", epsilon=0.02, commission=0.1):
     stats = {
         'episode_reward': [],
         'episode_steps': [],
