@@ -40,7 +40,7 @@ def validation_run(env, net, Actions, episodes=100, device="cpu", epsilon=0.02, 
                 position = None
                 position_steps = None
 
-            obs, reward, done, _ = env.step(action_idx)
+            obs, reward, done, truncated, _ = env.step(action_idx)
             total_reward += reward
             episode_steps += 1
             if position_steps is not None:
