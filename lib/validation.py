@@ -11,7 +11,7 @@ def validation_run(env, net, Actions, episodes=100, device="cpu", epsilon=0.02, 
     }
 
     for episode in range(episodes):
-        obs = env.reset()
+        obs, _ = env.reset()
 
         total_reward = 0.0
         position = None
