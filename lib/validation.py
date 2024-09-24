@@ -70,8 +70,8 @@ def validation_run_2(env, net, ExtendedActions, episodes=100, device="cpu", epsi
         obs, _ = env.reset()
 
         total_reward = 0.0
-        position = None
-        position_steps = None
+        position = 0.0
+        position_steps = 0
         episode_steps = 0
 
         while True:
@@ -93,16 +93,16 @@ def validation_run_2(env, net, ExtendedActions, episodes=100, device="cpu", epsi
                 profit = 100.0 * profit / position
                 stats['order_profits'].append(profit)
                 stats['order_steps'].append(position_steps)
-                position = None
-                position_steps = None
+                position = 0.0
+                position_steps = 0
 
             obs, reward, done, truncated, _ = env.step(action_idx)
             total_reward += reward
             episode_steps += 1
-            if position_steps is not None:
+            if position_steps > 0:
                 position_steps += 1
             if done:
-                if position is not None:
+                if position > 0.0:
                     profit = close_price - position - (close_price + position) * commission / 100
                     profit = 100.0 * profit / position
                     stats['order_profits'].append(profit)
