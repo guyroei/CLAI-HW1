@@ -88,7 +88,7 @@ def validation_run_2(env, net, ExtendedActions, episodes=100, device="cpu", epsi
             if action[0] > 0:
                 position = close_price
                 position_steps = 0
-            elif action[1] > 0:
+            if action[1] > 0:
                 profit = close_price - position - (close_price + position) * commission / 100
                 profit = 100.0 * profit / position
                 stats['order_profits'].append(profit)
