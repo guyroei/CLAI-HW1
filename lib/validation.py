@@ -84,12 +84,18 @@ def validation_run_2(env, net, ExtendedActions, episodes=100, device="cpu", epsi
             action = extendedActionsInstance.actionIdxToAction(action_idx)
 
             close_price = env._state._cur_close()
+            money_pool = env._state.moneyPool
+            owned_shares = env._state.ownShares
 
-            if action[0] > 0:
-                position = close_price
+            num_of_shares_to_buy = action[0]
+            num_of_shares_to_sell = action[1]
+            if num_of_shares_to_buy > 0:
+                position = close_price * num_of_shares_to_buy
+                if position > money_pool:
+                    position = 0.0
                 position_steps = 0
-            if action[1] > 0 and position > 0.0:
-                profit = close_price - position - (close_price + position) * commission / 100
+            if num_of_shares_to_sell > 0 and num_of_shares_to_sell <= owned_shares and position > 0.0:
+                profit = (close_price * num_of_shares_to_sell) - position - ((close_price * num_of_shares_to_sell) + position) * commission / 100
                 profit = 100.0 * profit / position
                 stats['order_profits'].append(profit)
                 stats['order_steps'].append(position_steps)
@@ -103,7 +109,7 @@ def validation_run_2(env, net, ExtendedActions, episodes=100, device="cpu", epsi
                 position_steps += 1
             if done:
                 if position > 0.0:
-                    profit = close_price - position - (close_price + position) * commission / 100
+                    profit = (close_price * num_of_shares_to_sell) - position - ((close_price * num_of_shares_to_sell) + position) * commission / 100
                     profit = 100.0 * profit / position
                     stats['order_profits'].append(profit)
                     stats['order_steps'].append(position_steps)
