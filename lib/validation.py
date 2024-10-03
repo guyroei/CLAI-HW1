@@ -176,8 +176,9 @@ def validation_run_3(env, net, ExtendedActions, episodes=100, device="cpu", epsi
                         open_positions[i][1] = purchased_shares-(num_of_shares_to_sell - shares_sold)
                     i += 1
 
-                stats['order_profits'].append(100.0 * total_profit / total_purchase_price)
-                stats['order_steps'].append(episode_steps)
+                if(total_purchase_price > 0):
+                    stats['order_profits'].append(100.0 * total_profit / total_purchase_price)
+                    stats['order_steps'].append(episode_steps)
 
             if num_of_shares_to_buy > 0:
                 cost = close_price * num_of_shares_to_buy
