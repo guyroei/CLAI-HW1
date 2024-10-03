@@ -191,7 +191,8 @@ def validation_run_3(env, net, ExtendedActions, episodes=100, device="cpu", epsi
             # Update steps for open positions
             i = 0
             while(i < len(open_positions)):
-                open_positions[i][2] += 1
+                purchase_price, purchased_shares, steps_held = open_positions[i]
+                open_positions[i] = purchase_price, purchased_shares, steps_held+1
                 i += 1
 
             if done:
