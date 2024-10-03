@@ -159,16 +159,16 @@ def validation_run_3(env, net, ExtendedActions, episodes=100, device="cpu", epsi
                 shares_sold = 0
 
                 i = 0
+                total_purchase_price = 0
                 while (i < len(open_positions)):
                     purchase_price, purchased_shares, steps_held = open_positions[i]
-
                     # Sold all required shares
                     if shares_sold >= num_of_shares_to_sell:
                         break
-
                     shares_to_sell = min(purchased_shares, num_of_shares_to_sell - shares_sold)
                     profit = (close_price - purchase_price)*shares_to_sell - (close_price * shares_to_sell + purchase_price * shares_to_sell)*commission/100
                     total_profit += profit
+                    total_purchase_price += shares_to_sell*purchase_price
                     shares_sold += shares_to_sell
                     if(shares_to_sell == purchased_shares):
                         open_positions.pop(i)
@@ -176,7 +176,7 @@ def validation_run_3(env, net, ExtendedActions, episodes=100, device="cpu", epsi
                         open_positions[i][1] = purchased_shares-(num_of_shares_to_sell - shares_sold)
                     i += 1
 
-                stats['order_profits'].append(100.0 * total_profit / (purchase_price * num_of_shares_to_sell))
+                stats['order_profits'].append(100.0 * total_profit / total_purchase_price)
                 stats['order_steps'].append(episode_steps)
 
             if num_of_shares_to_buy > 0:
@@ -187,7 +187,6 @@ def validation_run_3(env, net, ExtendedActions, episodes=100, device="cpu", epsi
             obs, reward, done, truncated, _ = env.step(action_idx)
             total_reward += reward
             episode_steps += 1
-
             # Update steps for open positions
             i = 0
             while(i < len(open_positions)):
