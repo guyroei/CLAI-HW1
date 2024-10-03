@@ -173,7 +173,8 @@ def validation_run_3(env, net, ExtendedActions, episodes=100, device="cpu", epsi
                     if(shares_to_sell == purchased_shares):
                         open_positions.pop(i)
                     else:
-                        open_positions[i][1] = purchased_shares-(num_of_shares_to_sell - shares_sold)
+                        new_purchased_shares = purchased_shares-(num_of_shares_to_sell - shares_sold)
+                        open_positions[i] = purchase_price, new_purchased_shares, steps_held
                     i += 1
 
                 if(total_purchase_price > 0):
